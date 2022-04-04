@@ -8,8 +8,10 @@ yad \
 	--center \
 	--text-info \
 	--fontname "Monospace 10" \
-	--filename hours.txt \
+	--filename example-output.txt \
 	--margins 12 \
 	--buttons-layout center \
 	--button Worked!emblem-default:0 \
 	--button Slacked!weather:1
+
+echo $?
