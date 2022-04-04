@@ -1,9 +1,15 @@
 #!/usr/bin/env python
 
 import subprocess
+from enum import IntEnum
 
 
-def run_clock_in_dialog():
+class Activity(IntEnum):
+    WORK = 0
+    SLACK = 1
+
+
+def run_clock_in_dialog() -> Activity:
     cmd = """
         yad \
             --title "Clocker" \
@@ -19,11 +25,12 @@ def run_clock_in_dialog():
             --button Worked!emblem-default:0 \
             --button Slacked!weather:1
     """
-    return subprocess.run([cmd], shell=True)
 
+    completed_process = subprocess.run([cmd], shell=True)
+
+    return Activity(completed_process.returncode)
 
 
 
 if __name__ == "__main__":
-    completed_process = run_clock_in_dialog()
-    print(completed_process.returncode)
+    print(run_clock_in_dialog())
