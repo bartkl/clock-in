@@ -1,0 +1,16 @@
+Week:
+	Contract:	 36 h,  0 m
+	Overtime:	+ 4 h, 13 m
+	Target:		 40 h, 13 m
+
+	Worked:	 	 12 h,  3 m
+
+	Left:		 28 h, 10 m
+	Left (÷4 d):	  7 h,  3 m
+	Left (÷7 d):	  4 h,  2 m
+
+Day:
+	Worked:  	  4 h,  2 m
+
+	Left (9 h):	  4 h, 58 m
+	Left (÷4 d):	  3 h,  1 m
