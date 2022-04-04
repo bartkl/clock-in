@@ -33,8 +33,8 @@ def run_clock_in_dialog(overview_file) -> Optional[Activity]:
             --filename {overview_file} \
             --margins 12 \
             --buttons-layout center \
-            --button Worked!emblem-default:0 \
-            --button Slacked!weather:1
+            --button Register!bookmark-new:0 \
+            --button Calibrate!find-location-symbolic:1
     """
 
     completed_process = subprocess.run([cmd], shell=True)
