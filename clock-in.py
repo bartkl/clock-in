@@ -1,5 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env python
 
+import subprocess
+
+UI_CMD = """
 yad \
 	--title "Clocker" \
 	--window-icon "appointment" \
@@ -13,5 +16,9 @@ yad \
 	--buttons-layout center \
 	--button Worked!emblem-default:0 \
 	--button Slacked!weather:1
+"""
 
-echo $?
+
+if __name__ == "__main__":
+    completed_process = subprocess.run([UI_CMD], shell=True)
+    print(completed_process.returncode)
