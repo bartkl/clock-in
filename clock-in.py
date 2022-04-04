@@ -47,7 +47,10 @@ def run_clock_in_dialog(overview_file) -> Optional[Activity]:
 
 def main():
     overview_file = generate_overview()
-    print(run_clock_in_dialog(overview_file))
+    activity = run_clock_in_dialog(overview_file)
+
+
+    # Clean-up.
 
     os.unlink(overview_file)  # Remove tempfile.
 
