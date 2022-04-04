@@ -14,7 +14,6 @@ class Activity(IntEnum):
 
 def generate_overview() -> str:
     text_file = NamedTemporaryFile(delete=False).name
-    print(text_file)
     with open("example-output.txt") as g, open(text_file, mode="w") as f:
         f.write(g.read())
 
