@@ -14,9 +14,9 @@ from typing import Optional
 
 
 class Config:
-    hours_in_week: float = 36.0
-    hours_in_work_day: float = 9.0
-    # work_days = list(range(4))  # Monday is 0.
+    hours_in_week = 36.0
+    hours_in_work_day = 9.0
+    work_days = [0, 1, 2, 3]  # Monday is 0.
     virtual_midnight = datetime_time(hour=2, minute=0)
     state_file = Path(appdirs.user_config_dir()) / "clock-in" / "state.json"
 
@@ -98,6 +98,9 @@ class Dialog:
         left_or_surplus_week_label = left_label if hours_left_week >= 0 else surplus_label
         left_or_surplus_today_label = left_label if hours_left_today >= 0 else surplus_label
 
+        today_weekday = datetime.today().weekday()
+        today_is_workday = today_weekday in self.config.work_days
+
         info = (
             f'<span size="large"><b>Week\n</b></span>\n'
             f'\t<span size="medium">{worked_label}\t\t\t{worked_week_fmtd}</span>\n'
@@ -105,13 +108,9 @@ class Dialog:
             f'\n'
             f'<span size="large"><b>Today</b></span>\n\n'
             f'\t<span size="medium">{worked_label}\t\t\t{worked_today_fmtd}</span>\n'
-            f'\t<span size="medium">{left_or_surplus_today_label}\t\t\t{hours_left_today_fmtd}</span>\n'
-            f'\n'
         )
-
-        # TODO: Correction entry.
-        # --entry \
-        # --entry-label='\tCorrection:\t\t\t' \
+        if today_is_workday:
+            info += f'\t<span size="medium">{left_or_surplus_today_label}\t\t\t{hours_left_today_fmtd}</span>\n\n'
 
         cmd = f"""
             yad \
@@ -158,7 +157,7 @@ class Dialog:
 
         # Every Monday at virtual midnight, the week balance will be updated.
         if last_action <= DateHelpers().get_last_monday_virtual_midnight(self.config.virtual_midnight):
-            self.state["timeWorkedWeek"] = 0.0
+            self.state["timeWorkedWeek"] -= 36.0
             updated = True
 
         # Every day at virtual midnight, the day balance will be reset.
