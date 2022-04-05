@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import appdirs
 import json
 import os
 import random
@@ -8,6 +9,7 @@ import time
 from collections import UserDict
 from datetime import datetime, timedelta, date, time as datetime_time
 from enum import IntEnum
+from pathlib import Path
 from typing import Optional
 
 
@@ -16,7 +18,7 @@ class Config:
     hours_in_work_day: float = 9.0
     # work_days = list(range(4))  # Monday is 0.
     virtual_midnight = datetime_time(hour=2, minute=0)
-    state_file = "/home/bartkl/state.json"
+    state_file = Path(appdirs.user_config_dir()) / "clock-in" / "state.json"
 
 
 class State(UserDict):
