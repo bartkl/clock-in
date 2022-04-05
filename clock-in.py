@@ -76,6 +76,10 @@ class Dialog:
         left_label = "Left:\t"
         surplus_label = "Surplus:"
 
+        last_action = datetime.fromisoformat(self.state["lastActionAt"])
+        worked = (datetime.now() - last_action).total_seconds() / 3600.0
+        worked_fmtd = DateHelpers().format_duration(worked * 3600)
+
         hours_in_week = self.config.hours_in_week * 3600
         hours_in_work_day = self.config.hours_in_work_day * 3600
 
@@ -84,15 +88,11 @@ class Dialog:
         hours_left_week = hours_in_week - worked_week
         hours_left_today = hours_in_work_day - worked_today
 
-        # TODO: `int` gooit veel te veel weg.
-        worked_week_fmtd = DateHelpers().format_duration(int(worked_week))
-        worked_today_fmtd = DateHelpers().format_duration(int(worked_today))
-        hours_left_week_fmtd = DateHelpers().format_duration(int(hours_left_week))
-        hours_left_today_fmtd = DateHelpers().format_duration(int(hours_left_today))
+        worked_week_fmtd = DateHelpers().format_duration(worked_week)
+        worked_today_fmtd = DateHelpers().format_duration(worked_today)
+        hours_left_week_fmtd = DateHelpers().format_duration(hours_left_week)
+        hours_left_today_fmtd = DateHelpers().format_duration(hours_left_today)
 
-        print(worked_today)
-        print(worked_today_fmtd)
-        
         left_or_surplus_week_label = left_label if hours_left_week >= 0 else surplus_label
         left_or_surplus_today_label = left_label if hours_left_today >= 0 else surplus_label
 
@@ -122,21 +122,20 @@ class Dialog:
                 --center \
                 --text '{info}' \
                 --buttons-layout spread \
-                --button 'Add'!bookmark-new:0 \
+                --button 'Add {worked_fmtd}'!bookmark-new:0 \
                 --button "Didn't work"!find-location-symbolic:1
         """
 
         completed_process = subprocess.run([cmd], shell=True, stdout=subprocess.PIPE)
 
         try:
-            return Activity(completed_process.returncode), completed_process
+            return Activity(completed_process.returncode), completed_process, worked
         except ValueError:
-            return Activity.NOTHING, completed_process
+            return Activity.NOTHING, completed_process, worked
 
-    def handle_activity(self, activity: Activity, proc):
+    def handle_activity(self, activity: Activity, proc, worked):
         if activity == Activity.WORK:
-            last_action = datetime.fromisoformat(self.state["lastActionAt"])
-            worked = (datetime.now() - last_action).total_seconds() / 3600.0
+            self.state["timeWorkedWeek"] += worked
             self.state["timeWorkedToday"] += worked
 
             self.update_last_action_at(datetime.now())
@@ -207,8 +206,9 @@ class DateHelpers:
     @staticmethod
     def format_duration(t):
         t = abs(t)
-        hours = t // 3600
-        minutes = (t % 3600) * 60
+
+        hours = int(t // 3600)
+        minutes = int((t % 3600) // 60)
 
         return f"{hours:02}:{minutes:02}"
 
@@ -218,9 +218,9 @@ def main():
     state = State.from_file(config.state_file)
 
     dialog = Dialog(config, state)
-    activity, proc = dialog.run_ui()
+    activity, proc, worked = dialog.run_ui()
 
-    dialog.handle_activity(activity, proc)
+    dialog.handle_activity(activity, proc, worked)
 
 
 if __name__ == "__main__":
