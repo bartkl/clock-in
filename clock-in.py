@@ -31,29 +31,30 @@ def run_clock_in_dialog(overview_file) -> Optional[Activity]:
     left_or_surplus_today = surplus
     left_or_surplus_week = left
 
-    info = f"""
-        <span size="large"><b>\tToday\n</b></span>
-        <span size="medium">\t\t{worked}\t\t\t07:28</span>
-        <span size="medium">\t\t{left_or_surplus_today}\t\t\t05:28</span>
-        \n
-        <span size="large"><b>\tWeek\n</b></span>
-        <span size="medium">\t\t\{worked}\t\t\t07:28</span>
-        <span size="medium">\t\t{left_or_surplus_week}\t\t\t05:28</span>
-        \n
-    """
-
+    info = (
+        f'<span size="large"><b>Week\n</b></span>\n'
+        f'\t<span size="medium">{worked}\t\t\t07:28</span>\n'
+        f'\t<span size="medium">{left_or_surplus_week}\t\t\t05:28</span>\n'
+        f'\n'
+        f'<span size="large"><b>Today</b></span>\n\n'
+        f'\t<span size="medium">{worked}\t\t\t07:28</span>\n'
+        f'\t<span size="medium">{left_or_surplus_today}\t\t\t05:28</span>\n'
+        f'\n'
+    )
     cmd = f"""
         yad \
             --title "Clock In" \
             --window-icon "appointment" \
+            --borders 15 \
+            --text-align left \
             --width 340 \
             --height 240 \
             --center \
             --text '{info}' \
             --entry \
-                --entry-label='\t\tHours\t' \
+                --entry-label='\tHours\t\t\t' \
                 --entry-text='{hours}' \
-            --buttons-layout center \
+            --buttons-layout spread \
             --button 'Add'!bookmark-new:0 \
             --button "Didn't work"!find-location-symbolic:1 \
     """
