@@ -50,8 +50,11 @@ def run_clock_in_dialog(overview_file) -> Optional[Activity]:
             --height 240 \
             --center \
             --text '{info}' \
+            --entry \
+                --entry-label='\t\tHours\t' \
+                --entry-text='{hours}' \
             --buttons-layout center \
-            --button 'Add {hours}'!bookmark-new:0 \
+            --button 'Add'!bookmark-new:0 \
             --button "Didn't work"!find-location-symbolic:1 \
     """
 
