@@ -54,7 +54,7 @@ class State(UserDict):
 
     def write(self):
         with open(self.filepath, mode="w") as g:
-            json.dump(self.data, g)
+            json.dump(self.data, g, indent=4)
 
 
 class Activity(IntEnum):
