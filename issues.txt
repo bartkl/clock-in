@@ -1,0 +1,17 @@
+- Seconds are thrown away in display, but without regards for rounding or something like that. 34:03:59 will be shown as 34:03. This should be fixed: either rounding should be used such that adding "Worked" and "Left" always adds up to the proper total hours.
+- Sadly, there's no updating the UI. One notable issue with this is that when you leave the dialog open for longer than a minute, and then click "Add", what will happen? Currently, because we display the worked hours, it is calculated in `run_ui`, and that value is then passed around.
+	- This is actually a great decision. Note that as long as this screen is open, you haven't put in any extra work. That's a fair assumption. So it's only good that it displays (and acts upon!) the old value. Of course, most of the time none of all this is a real issue.
+- Consider building in an text entry where you can override the time to add for corrective purposes, if for instance you were slacking half of the time and forgot to register earlier.
+	-
+		# TODO: Correction entry.
+		# --entry \
+		# --entry-label='\tCorrection:\t\t\t' \
+- Consider also (or instead of next to "Add") showing a projection of what's the updated values. Examples:
+
+	- Week:
+		Left:	32:00	(31:14 after adding)
+	- Week:
+		Left:		32:00
+		Left if added:	31:14
+
+  Should be considered carefully, because it gets noisy fast. And you can always just open the tool immediately again. *Think* about this one.
