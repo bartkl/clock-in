@@ -28,8 +28,7 @@ class Activity(IntEnum):
     SLACK = 1
 
 
-def run_clock_in_dialog(daily_balance, weekly_balance, time_to_add) -> Optional[Activity]:
-
+def run_clock_in_dialog(daily_balance, weekly_balance) -> Optional[Activity]:
     worked = "Worked:"
     left = "Left:\t"
     surplus = "Surplus:"
@@ -59,7 +58,7 @@ def run_clock_in_dialog(daily_balance, weekly_balance, time_to_add) -> Optional[
             --text '{info}' \
             --entry \
                 --entry-label='\tHours\t\t\t' \
-                --entry-text='{time_to_add}' \
+                --entry-text='4:32' \
             --buttons-layout spread \
             --button 'Add'!bookmark-new:0 \
             --button "Didn't work"!find-location-symbolic:1 \
@@ -127,10 +126,9 @@ def update_time_worked_day(state):
         state["lastAction"] = datetime.isoformat(datetime.now()) # Also takes care of the daily priming!
 
 def main():
-    time_to_add = timedelta(hours=4, minutes=32, seconds=1)
     daily_balance = timedelta(hours=1, minutes=10, seconds=3)
     weekly_balance = timedelta(hours=12, minutes=10, seconds=3)
-    activity = run_clock_in_dialog(daily_balance, weekly_balance, time_to_add)
+    activity = run_clock_in_dialog(daily_balance, weekly_balance)
 
 
 
