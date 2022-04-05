@@ -21,20 +21,25 @@ class State:
     def __init__(self, filepath):
         self._state = {}
         self.filepath = filepath
-        self._read_state_file()
+        self.read()
 
     @property
     def state(self):
         return self._state
 
-    def _read_state_file(self):
+    def read(self):
         with open(self.filepath) as f:
             self._state = json.load(f)
+
+    def sync(self):
+        with open(self.filepath, mode="w") as g:
+            json.dumps(g)
 
 
 class Activity(IntEnum):
     WORK = 0
     SLACK = 1
+
 
 class Dialog:
     def __init__(self, state, config):
