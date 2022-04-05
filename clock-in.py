@@ -110,7 +110,7 @@ def update_time_worked_week(state):
 
     if last_action <= get_last_monday_at_virtual_midnight():
         state["timeWorkedWeek"] -= contract
-        state["lastAction" = datetime.isoformat(datetime.now())
+        state["lastAction"] = datetime.isoformat(datetime.now())
 
 
 def update_time_worked_day(state):
@@ -124,7 +124,7 @@ def update_time_worked_day(state):
 
     if last_action <= get_today_at_virtual_midnight():
         state["timeWorkedToday"] = 0.00
-        state["lastAction" = datetime.isoformat(datetime.now()) # Also takes care of the daily priming!
+        state["lastAction"] = datetime.isoformat(datetime.now()) # Also takes care of the daily priming!
 
 def main():
     time_to_add = timedelta(hours=4, minutes=32, seconds=1)
