@@ -15,3 +15,4 @@
 		Left if added:	31:14
 
   Should be considered carefully, because it gets noisy fast. And you can always just open the tool immediately again. *Think* about this one.
+- I think having an overview of how much you didn't work on a day is nice too. Now I don't know how much breaks I took on a workday. Think about that. It could involve having another day-level balance?
